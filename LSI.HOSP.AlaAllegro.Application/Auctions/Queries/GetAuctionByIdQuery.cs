@@ -1,5 +1,6 @@
 ﻿using LSI.HOSP.AlaAllegro.Application.Common.Commands;
 using LSI.HOSP.AlaAllegro.Infrastructure;
+using LSI.HOSP.AlaAllegro.Infrastructure.DataAccess;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -36,8 +37,9 @@ namespace LSI.HOSP.AlaAllegro.Application.Auctions.Queries
                         guest.PhoneNumber, guest.Street, guest.Zip, guest.CityId, guest.CountryId, 
                         guest.MarketingConsents != null ? guest.MarketingConsents.Select(mc => mc.Id).ToList() : null);
                         */
+                var auction = await _context.Auctions.GetFiltered().GetFirstOrDefaultAsync(c => c.Id == request.Id, cancellationToken);
 
-                return new AuctionViewModel(11, "tytul", "body");
+                return new AuctionViewModel(auction.Id, auction.Title, auction.Body);
             }
         }
     }

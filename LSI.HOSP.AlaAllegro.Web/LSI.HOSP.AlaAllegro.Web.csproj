@@ -18,6 +18,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\LSI.HOSP.AlaAllegro.Application\LSI.HOSP.AlaAllegro.Application.csproj" />
+    <ProjectReference Include="..\LSI.HOSP.AlaAllegro.Infrastructure\LSI.HOSP.AlaAllegro.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

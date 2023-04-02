@@ -36,26 +36,7 @@ namespace LSI.HOSP.AlaAllegro.Web
             });
 
             services.AddApplication(Configuration);
-            services.AddInfrastructure(Configuration);
-            //services.RegisterRequestHandlers();
-            //services.AddHttpContextAccessor();
-
-            //services.AddMediatR(Assembly.GetExecutingAssembly());
-
-            //services.AddMediatR(typeof(Startup));
-
-
-            //services.AddScoped(typeof(AppDbContext));
-
-            //services.AddMediatR(Assembly.GetExecutingAssembly());
-
-            //services.AddMediatR(AppDomain.CurrentDomain.GetAssemblies());
-
-            //services.AddMediatR(typeof(MyHandler));
-            //typeof(Startup).GetTypeInfo().Assembly)
-
-            //services.AddMediatR(typeof(Startup).GetTypeInfo().Assembly);
-
+            services.AddInfrastructure(Configuration);            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

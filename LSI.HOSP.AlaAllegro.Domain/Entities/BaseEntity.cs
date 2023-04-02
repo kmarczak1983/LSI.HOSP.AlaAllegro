@@ -16,5 +16,7 @@ namespace LSI.HOSP.AlaAllegro.Domain.Entities
     public class BaseEntity
     {
         public DateTime CreatedDate { get; set; }
+
+        public bool IsDeleted { get; set; }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using LSI.HOSP.AlaAllegro.Domain.Entities.Auctions;
+using LSI.HOSP.AlaAllegro.Domain.Entities.Users;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -14,7 +15,6 @@ namespace LSI.HOSP.AlaAllegro.Infrastructure
         {
 
         }
-
         
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
@@ -23,6 +23,6 @@ namespace LSI.HOSP.AlaAllegro.Infrastructure
 
         public virtual DbSet<Auction> Auctions { get; set; }
 
-        public virtual DbSet<Auction> Users { get; set; }
+        public virtual DbSet<User> Users { get; set; }
     }
 }

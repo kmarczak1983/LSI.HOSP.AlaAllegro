@@ -29,7 +29,6 @@ namespace LSI.HOSP.AlaAllegro.Web
         {
             services.AddControllers();
            
-            //services.AddRazorPages();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "LSI.Hosp.AlaAllegro", Version = "v1"/*GetType().Assembly.GetName().Version.ToString()*/ });

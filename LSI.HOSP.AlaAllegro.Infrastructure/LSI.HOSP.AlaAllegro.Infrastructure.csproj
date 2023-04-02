@@ -18,8 +18,4 @@
     <ProjectReference Include="..\LSI.HOSP.AlaAllegro.Domain\LSI.HOSP.AlaAllegro.Domain.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="DataAccess\" />
-  </ItemGroup>
-
 </Project>

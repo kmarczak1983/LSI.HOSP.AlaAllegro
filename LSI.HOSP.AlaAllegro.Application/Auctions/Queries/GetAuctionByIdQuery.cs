@@ -29,14 +29,6 @@ namespace LSI.HOSP.AlaAllegro.Application.Auctions.Queries
 
             public async Task<AuctionViewModel> Handle(GetAuctionByIdQuery request, CancellationToken cancellationToken)
             {
-                /*
-                    var auction = await _context.Auctions. GetFiltered().GetFirstOrDefaultAsync(c => c.Id == request.Id, cancellationToken);
-                    var guest = await _context.Guests.GetFiltered().GetFirstOrDefaultAsync(c => c.Id == request.Id, cancellationToken);
-                    return new GuestViewModel(guest.Id, guest.FirstName, guest.LastName, guest.Birthday, guest.Sex, 
-                        guest.Pin, guest.DocumentType, guest.DocumentNumber, guest.EmailAddress, 
-                        guest.PhoneNumber, guest.Street, guest.Zip, guest.CityId, guest.CountryId, 
-                        guest.MarketingConsents != null ? guest.MarketingConsents.Select(mc => mc.Id).ToList() : null);
-                        */
                 var auction = await _context.Auctions.GetFiltered().GetFirstOrDefaultAsync(c => c.Id == request.Id, cancellationToken);
 
                 return new AuctionViewModel(auction.Id, auction.Title, auction.Body);

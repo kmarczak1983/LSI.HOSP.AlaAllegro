@@ -17,6 +17,8 @@ namespace LSI.HOSP.AlaAllegro.Domain.Entities
     {
         public DateTime CreatedDate { get; set; }
 
-        public bool IsDeleted { get; set; }
+        public DateTime LastModifiedDate { get; set; }
+
+        public bool IsDeleted { get; set; } = false;
     }
 }

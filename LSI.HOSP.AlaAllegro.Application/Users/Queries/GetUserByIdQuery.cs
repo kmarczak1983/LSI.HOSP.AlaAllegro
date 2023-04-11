@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace LSI.HOSP.AlaAllegro.Application.Users.Queries
 {
-    public class GetUserByIdQuery : BaseCommand, IRequest<UserViewModel>
+    public class GetUserByIdQuery : BaseCommand<int>, IRequest<UserViewModel>
     {
         public GetUserByIdQuery(int id)
         {

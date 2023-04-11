@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace LSI.HOSP.AlaAllegro.Application.Common.Commands
 {
-    public class BaseCommand
+    public class BaseCommand<T>
     {
-        public int Id { get; set; }
+        public T Id { get; set; }
     }
 }

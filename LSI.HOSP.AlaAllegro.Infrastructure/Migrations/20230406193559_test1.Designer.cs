@@ -4,14 +4,16 @@ using LSI.HOSP.AlaAllegro.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace LSI.HOSP.AlaAllegro.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230406193559_test1")]
+    partial class test1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -88,7 +90,7 @@ namespace LSI.HOSP.AlaAllegro.Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("PurchaseOffers");
+                    b.ToTable("PurchaseOffer");
                 });
 
             modelBuilder.Entity("LSI.HOSP.AlaAllegro.Domain.Entities.Users.User", b =>

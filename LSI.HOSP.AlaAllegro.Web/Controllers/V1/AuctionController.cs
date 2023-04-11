@@ -19,7 +19,7 @@ namespace LSI.HOSP.AlaAllegro.Web.Controllers.V1
 
        
         [HttpGet("{id}")]
-        public Task<IActionResult> GetAuctionById(int id, CancellationToken cancellationToken)
+        public Task<IActionResult> GetAuctionById(Guid id, CancellationToken cancellationToken)
             => ExecuteQuery(new GetAuctionByIdQuery(id), cancellationToken);
     }
 }

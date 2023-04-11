@@ -12,6 +12,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using LSI.HOSP.AlaAllegro.Application;
+using System.Text.Json.Serialization;
 
 namespace LSI.HOSP.AlaAllegro.Web
 {
@@ -35,7 +36,10 @@ namespace LSI.HOSP.AlaAllegro.Web
             });
 
             services.AddApplication(Configuration);
-            services.AddInfrastructure(Configuration);            
+            services.AddInfrastructure(Configuration);
+
+            //services.AddControllers().AddJsonOptions(x => x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve);
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

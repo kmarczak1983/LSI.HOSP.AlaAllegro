@@ -21,19 +21,7 @@ namespace LSI.HOSP.AlaAllegro.Application.Auctions.Queries
             ModificationDate = modificationDate;
             CreatedDate = createdDate;
             CurrentPrice = currentPrice;
-            CurrentPriceHolder = currentPriceHolder;
-          /*
-             "createdBy": { "fullName": string, "email": string, "phone": string },
-			 "body": string,
-
-             "modificationDate": string(pełna data w UTC ISO),
-			 "createdDate": string(pełna data w UTC ISO),
-			 "currentPrice": string(aktualna najwyższa oferta kupna bądź cena początkowa),
-			 "currentPriceHolder": string | null(imię i nazwisko użytkownika z najwyższą stawką, jeśli nikt nie dał ceny to null)
-          */
-
-
-
+            CurrentPriceHolder = currentPriceHolder;         
         }
 
         public string Id { get; }

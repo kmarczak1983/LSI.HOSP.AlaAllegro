@@ -13,6 +13,8 @@ using System.Reflection;
 using System.Threading.Tasks;
 using LSI.HOSP.AlaAllegro.Application;
 using System.Text.Json.Serialization;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace LSI.HOSP.AlaAllegro.Web
 {
@@ -29,10 +31,45 @@ namespace LSI.HOSP.AlaAllegro.Web
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-           
+            services.AddSignalR();
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "LSI.Hosp.AlaAllegro", Version = "v1"/*GetType().Assembly.GetName().Version.ToString()*/ });
+            });
+
+
+            var authenticationSettings = new AuthenticationSettings();
+
+            Configuration.GetSection("Authentication").Bind(authenticationSettings);
+
+            services.AddSingleton(authenticationSettings);
+            
+            services.AddAuthentication(option =>
+            {
+                option.DefaultAuthenticateScheme = "Bearer";
+                option.DefaultScheme = "Bearer";
+                option.DefaultChallengeScheme = "Bearer";
+            }).AddJwtBearer(cfg =>
+            {
+                cfg.RequireHttpsMetadata = false;
+                cfg.SaveToken = true;
+                cfg.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidIssuer = authenticationSettings.JwtIssuer,
+                    ValidAudience = authenticationSettings.JwtIssuer,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(authenticationSettings.JwtKey)),
+                };
+            });
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy("FrontEndClient", builder =>
+
+                    builder.AllowAnyMethod()
+                        .AllowAnyHeader()
+                        .WithOrigins(Configuration["AllowedOrigins"])
+                    );
             });
 
             services.AddApplication(Configuration);
@@ -63,6 +100,7 @@ namespace LSI.HOSP.AlaAllegro.Web
 
             app.UseRouting();
 
+            app.UseAuthentication();            
             app.UseAuthorization();
 
             /* app.UseEndpoints(endpoints =>

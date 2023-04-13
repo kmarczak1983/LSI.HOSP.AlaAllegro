@@ -17,7 +17,7 @@ namespace LSI.HOSP.AlaAllegro.Infrastructure
         {
 
         }
-        
+
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
 
@@ -27,7 +27,7 @@ namespace LSI.HOSP.AlaAllegro.Infrastructure
 
         public virtual DbSet<User> Users { get; set; }
 
-        public virtual DbSet<PurchaseOffer> PurchaseOffers { get; set; }    
+        public virtual DbSet<PurchaseOffer> PurchaseOffers { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -40,21 +40,26 @@ namespace LSI.HOSP.AlaAllegro.Infrastructure
                     .OnDelete(DeleteBehavior.Cascade);
             });
 
-            
+
             modelBuilder.Entity<PurchaseOffer>(eb =>
             {
                 eb.Property(po => po.Price).HasPrecision(14, 2);
                 eb.HasOne(po => po.Auction)
                     .WithMany(a => a.PurchaseOffers)
-                    .HasForeignKey(po  => po.AuctionId)
+                    .HasForeignKey(po => po.AuctionId)
                     .OnDelete(DeleteBehavior.Cascade);
                 eb.HasOne(po => po.User)
                     .WithMany(u => u.PurchaseOffers)
-                    .HasForeignKey(po =>po.UserId)
+                    .HasForeignKey(po => po.UserId)
                     .OnDelete(DeleteBehavior.ClientSetNull);
                 eb.HasAlternateKey(po => new { po.AuctionId, po.UserId });
             });
-                        
+
+            modelBuilder.Entity<User>(eb =>
+            {
+                eb.Property(u => u.Email).IsRequired();
+                eb.Property(u => u.Password).IsRequired();
+            });
         }
     }
 }

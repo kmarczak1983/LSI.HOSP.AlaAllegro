@@ -22,8 +22,12 @@ namespace LSI.HOSP.AlaAllegro.Web.Controllers.V1
         public Task<IActionResult> GetUserById(int id, CancellationToken cancellationToken)
            => ExecuteQuery(new GetUserByIdQuery(id), cancellationToken);
 
-        /*[HttpPut]
+        [HttpPut]
         public Task<IActionResult> UpdateUser([FromBody] CreateUserCommand command, CancellationToken cancellation)
-            => ExecuteCommand(command, cancellation);*/
+            => ExecuteCommand(command, cancellation);
+
+        [HttpPost("login")]
+        public Task<IActionResult> LoginUser([FromBody] LoginUserCommand command, CancellationToken cancellation)
+            => ExecuteCommand(command, cancellation);
     }
 }

@@ -1,4 +1,5 @@
-﻿using LSI.HOSP.AlaAllegro.Infrastructure.DataAccess.Interfaces;
+﻿using LSI.HOSP.AlaAllegro.Infrastructure.DataAccess;
+using LSI.HOSP.AlaAllegro.Infrastructure.DataAccess.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -13,12 +14,7 @@ namespace LSI.HOSP.AlaAllegro.Infrastructure
     public static class Extensions
     {
         public static void AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
-        {
-            //var connectionString = configuration.GetConnectionString("AlaAllegroConnectionString");
-            //services.AddDbContext<AppDbContext>(
-            //options =>  options.UseSqlServer(connectionString)
-            //);
-            //services.AddTransient(typeof(IRepository<>), typeof(Repository<>));
+        {               
             services.AddScoped(serviceProvider =>
             {
                 var connectionString = configuration.GetConnectionString("AlaAllegroConnectionString");                    
@@ -28,8 +24,8 @@ namespace LSI.HOSP.AlaAllegro.Infrastructure
                 var context = new AppDbContext(options);
                 return context;
             });
-
-
+            
+            services.AddTransient(typeof(IRepository<>), typeof(Repository<>));
         }
     }
 }

@@ -20,5 +20,10 @@ namespace LSI.HOSP.AlaAllegro.Domain.Entities
         public DateTime LastModifiedDate { get; set; }
 
         public bool IsDeleted { get; set; } = false;
-    }
+
+        public virtual void DeleteRecord()
+        {
+            IsDeleted = true;
+        }
+    }   
 }

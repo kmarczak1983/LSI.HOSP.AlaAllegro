@@ -30,6 +30,7 @@ namespace LSI.HOSP.AlaAllegro.Web.Controllers.V1
             => ExecuteCommandNoContent(command, cancellation);
 
         [HttpPost("login")]
+        [AllowAnonymous]
         public Task<IActionResult> LoginUser([FromBody] LoginUserCommand command, CancellationToken cancellation)
             => ExecuteCommand(command, cancellation);
     }

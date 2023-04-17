@@ -17,7 +17,7 @@ using LSI.HOSP.AlaAllegro.Domain.Exceptions;
 
 namespace LSI.HOSP.AlaAllegro.Application.Auctions.Commands
 {    
-    public class CreateUpdateAuctionCommand : IRequest<Guid>
+    public class CreateUpdateAuctionCommand : IRequest<Unit>
     {
         public string Title { get; set; }
 
@@ -42,7 +42,7 @@ namespace LSI.HOSP.AlaAllegro.Application.Auctions.Commands
         }
     }
 
-    public class CreateUpdateAuctionCommandHandler : IRequestHandler<CreateUpdateAuctionCommand, Guid>
+    public class CreateUpdateAuctionCommandHandler : IRequestHandler<CreateUpdateAuctionCommand, Unit>
     {
         private readonly IRepository<Auction> repository;
         private readonly AppDbContext _appDbContext;
@@ -59,7 +59,7 @@ namespace LSI.HOSP.AlaAllegro.Application.Auctions.Commands
         }
 
 
-        public async Task<Guid> Handle(CreateUpdateAuctionCommand request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(CreateUpdateAuctionCommand request, CancellationToken cancellationToken)
         {
             var auctionId = request.GetGuid();
             if (auctionId == Guid.Empty)
@@ -88,8 +88,7 @@ namespace LSI.HOSP.AlaAllegro.Application.Auctions.Commands
                 await repository.UpdateAsync(auction, cancellationToken);
             }
 
-            return auctionId;
-        }
-       
+            return Unit.Value;
+        }       
     }
 }

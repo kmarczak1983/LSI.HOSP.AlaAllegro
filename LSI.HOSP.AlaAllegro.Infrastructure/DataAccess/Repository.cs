@@ -21,6 +21,11 @@ namespace LSI.HOSP.AlaAllegro.Infrastructure.DataAccess
             _dbContext = dbContext;
         }
 
+        public IQueryable<TEntity> GetQueryable(Expression<Func<TEntity, bool>> predicate)
+        {
+            return _dbContext.Set<TEntity>().Where(c => !c.IsDeleted).Where(predicate);
+        }
+
         public IQueryable<TEntity> GetQueryable()
         {
             return _dbContext.Set<TEntity>().Where(c => !c.IsDeleted);
@@ -37,6 +42,7 @@ namespace LSI.HOSP.AlaAllegro.Infrastructure.DataAccess
         public async Task<TEntity> UpdateAsync(TEntity entity,
             CancellationToken cancellationToken = new())
         {
+            entity.LastModifiedDate = DateTime.UtcNow;
             await _dbContext.SaveChangesAsync(cancellationToken);
             return entity;
         }

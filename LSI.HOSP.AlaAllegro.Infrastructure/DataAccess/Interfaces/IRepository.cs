@@ -10,7 +10,9 @@ using System.Threading.Tasks;
 namespace LSI.HOSP.AlaAllegro.Infrastructure.DataAccess.Interfaces
 {
     public interface IRepository<TEntity> where TEntity : BaseEntity
-    {       
+    {
+        IQueryable<TEntity> GetQueryable(Expression<Func<TEntity, bool>> predicate);
+        
         IQueryable<TEntity> GetQueryable();  
 
         Task<TEntity> AddAsync(TEntity entity, CancellationToken cancellationToken = new());

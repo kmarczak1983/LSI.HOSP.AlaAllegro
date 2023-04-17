@@ -15,6 +15,7 @@ using LSI.HOSP.AlaAllegro.Application;
 using System.Text.Json.Serialization;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using LSI.HOSP.AlaAllegro.Infrastructure.Services;
 
 namespace LSI.HOSP.AlaAllegro.Web
 {
@@ -62,6 +63,7 @@ namespace LSI.HOSP.AlaAllegro.Web
                 };
             });
 
+
             services.AddCors(options =>
             {
                 options.AddPolicy("FrontEndClient", builder =>
@@ -74,9 +76,6 @@ namespace LSI.HOSP.AlaAllegro.Web
 
             services.AddApplication(Configuration);
             services.AddInfrastructure(Configuration);
-
-            //services.AddControllers().AddJsonOptions(x => x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve);
-
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

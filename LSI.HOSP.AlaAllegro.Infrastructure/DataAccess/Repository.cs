@@ -33,5 +33,12 @@ namespace LSI.HOSP.AlaAllegro.Infrastructure.DataAccess
             await _dbContext.SaveChangesAsync(cancellationToken);
             return entity;
         }
+
+        public async Task<TEntity> UpdateAsync(TEntity entity,
+            CancellationToken cancellationToken = new())
+        {
+            await _dbContext.SaveChangesAsync(cancellationToken);
+            return entity;
+        }
     }
 }

@@ -14,5 +14,7 @@ namespace LSI.HOSP.AlaAllegro.Infrastructure.DataAccess.Interfaces
         IQueryable<TEntity> GetQueryable();  
 
         Task<TEntity> AddAsync(TEntity entity, CancellationToken cancellationToken = new());
+
+        Task<TEntity> UpdateAsync(TEntity entity, CancellationToken cancellationToken = new());
     }
 }

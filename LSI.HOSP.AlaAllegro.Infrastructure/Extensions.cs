@@ -1,5 +1,6 @@
 ﻿using LSI.HOSP.AlaAllegro.Infrastructure.DataAccess;
 using LSI.HOSP.AlaAllegro.Infrastructure.DataAccess.Interfaces;
+using LSI.HOSP.AlaAllegro.Infrastructure.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -25,7 +26,7 @@ namespace LSI.HOSP.AlaAllegro.Infrastructure
                 return context;
             });
             
-            services.AddTransient(typeof(IRepository<>), typeof(Repository<>));
+            services.AddTransient(typeof(IRepository<>), typeof(Repository<>));            
         }
     }
 }

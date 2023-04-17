@@ -2,6 +2,7 @@
 using LSI.HOSP.AlaAllegro.Domain.Entities.Auctions;
 using LSI.HOSP.AlaAllegro.Domain.Entities.Users;
 using LSI.HOSP.AlaAllegro.Infrastructure.DataAccess.Interfaces;
+using MathNet.Numerics.Statistics.Mcmc;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -28,10 +29,14 @@ namespace LSI.HOSP.AlaAllegro.Application.Auctions.Queries
         }
 
         protected override Expression<Func<Auction, AuctionListViewModel>> Map() =>
-            a => new AuctionListViewModel(a.Id.ToString(),               a.Title,
-                "",//a.Author.FirstName + " " + auction.Author.LastName,
+            a => new AuctionListViewModel(
+                a.Id.ToString(),               
+                a.Title,
+                a.Author.FirstName + " " + a.Author.LastName,
                 a.LastModifiedDate.ToString(),
-                a.StartPrice.ToString());
+                a.PurchaseOffers != null && a.PurchaseOffers.Any() ? 
+                    a.PurchaseOffers.OrderByDescending(po => po.CreatedDate).Last().Price.ToString() : a.StartPrice.ToString()
+                );
 
         /*
 

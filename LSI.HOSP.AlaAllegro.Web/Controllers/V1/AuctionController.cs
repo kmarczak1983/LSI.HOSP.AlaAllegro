@@ -8,6 +8,8 @@ using System.Collections.Generic;
 using System.Security.Permissions;
 using System.Security;
 using Microsoft.AspNetCore.Authorization;
+using LSI.HOSP.AlaAllegro.Application.Users.Commands;
+using LSI.HOSP.AlaAllegro.Application.Auctions.Commands;
 
 namespace LSI.HOSP.AlaAllegro.Web.Controllers.V1
 {
@@ -21,17 +23,22 @@ namespace LSI.HOSP.AlaAllegro.Web.Controllers.V1
         {
         }
 
-        [HttpGet("Auctions")]        
+        [HttpGet("Auctions")]
         public Task<IActionResult> GetAuctions([FromQuery] GetAuctionsQuery query, CancellationToken cancellation)
            => ExecuteQuery(query, cancellation);
 
 
         [HttpGet("{id}")]
-        public Task<IActionResult> GetAuctionById(Guid id, CancellationToken cancellationToken)
+        public Task<IActionResult> GetAuctionById([FromRoute] Guid id, CancellationToken cancellationToken)
             => ExecuteQuery(new GetAuctionByIdQuery(id), cancellationToken);
 
-        //[HttpPut]
-        //public Task<IActionResult> Update(UpdateRoomCommand command, CancellationToken token)
-          //  => ExecuteCommand(command, token);
+        
+        [HttpPut]
+        public Task<IActionResult> CreataAuction([FromBody] CreateUpdateAuctionCommand command, CancellationToken cancellation)
+            => ExecuteCommandNoContent(command, cancellation);
+
+        [HttpPut("{id}")]
+        public Task<IActionResult> UpdateAuction([FromBody] CreateUpdateAuctionCommand command, [FromRoute] Guid id, CancellationToken cancellation)
+            => ExecuteCommandNoContent(new CreateUpdateAuctionCommand(id) { Title = command.Title, Body = command.Body, InitialPrice = command.InitialPrice }, cancellation);
     }
 }

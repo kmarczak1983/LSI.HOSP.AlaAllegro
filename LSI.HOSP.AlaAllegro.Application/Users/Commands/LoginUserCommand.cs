@@ -1,5 +1,6 @@
 ﻿using LSI.HOSP.AlaAllegro.Domain.Entities.Users;
 using LSI.HOSP.AlaAllegro.Infrastructure;
+using LSI.HOSP.AlaAllegro.Infrastructure.DataAccess;
 using LSI.HOSP.AlaAllegro.Infrastructure.DataAccess.Interfaces;
 using MediatR;
 using Microsoft.IdentityModel.Tokens;
@@ -52,7 +53,7 @@ namespace LSI.HOSP.AlaAllegro.Application.Users.Commands
         
         public async Task<string> Handle(LoginUserCommand request, CancellationToken cancellationToken)
         {
-            var user = _appDbContext.Users.FirstOrDefault(u => u.Email == request.Email);
+            var user = await _appDbContext.Users.GetFirstOrDefaultAsync(u => u.Email == request.Email, cancellationToken);
 
             if (user is null) 
             {

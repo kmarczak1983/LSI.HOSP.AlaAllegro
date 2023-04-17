@@ -1,7 +1,11 @@
 ﻿using LSI.HOSP.AlaAllegro.Domain.Entities.Users;
+using LSI.HOSP.AlaAllegro.Domain.Exceptions;
 using LSI.HOSP.AlaAllegro.Infrastructure;
+using LSI.HOSP.AlaAllegro.Infrastructure.DataAccess;
 using LSI.HOSP.AlaAllegro.Infrastructure.DataAccess.Interfaces;
+using LSI.HOSP.AlaAllegro.Infrastructure.Services;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -15,7 +19,7 @@ using System.Xml.Linq;
 
 namespace LSI.HOSP.AlaAllegro.Application.Users.Commands
 {
-    public class CreateUserCommand : IRequest<int>
+    public class CreateUserCommand : IRequest<Unit>
     {
         public string FirstName { get; set; }
         
@@ -28,45 +32,59 @@ namespace LSI.HOSP.AlaAllegro.Application.Users.Commands
         public string? Phone { get; set; }
     }
 
-    public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, int>
+    public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, Unit>
     {
         private readonly IRepository<User> repository;
-         // private readonly ICustomerBaseFieldsService customerBaseFields;
-       // private readonly IValidationProvider<Guest> _validationProvider;
         private readonly AppDbContext _appDbContext;
+        private readonly ICurrentUserService _currentUserService;
 
-       
-        public CreateUserCommandHandler(IRepository<User> repository
-            ,
-                                         //ICustomerBaseFieldsService customerBaseFields,
-                                         //IValidationProvider<Guest> validationProvider,
-                                         AppDbContext appDbContext)
+
+        public CreateUserCommandHandler(IRepository<User> repository,
+                                        AppDbContext appDbContext,
+                                        ICurrentUserService currentUserService)
         {
           this.repository = repository;
-            //this.customerBaseFields = customerBaseFields;
-            //_validationProvider = validationProvider;
             _appDbContext = appDbContext;
+            _currentUserService = currentUserService;
         }
 
         
-        public async Task<int> Handle(CreateUserCommand request, CancellationToken cancellationToken)
-        {            
-            var user = new User
+        public async Task<Unit> Handle(CreateUserCommand request, CancellationToken cancellationToken)
+        {
+            if (_currentUserService.GetUserId is null)
             {
-                FirstName = request.FirstName,
-                LastName = request.LastName,
-                Email = request.Email,
-                Password = request.Password                
-            };
+                if (await repository.GetQueryable().AnyAsync(u => u.Email.Equals(request.Email),  cancellationToken)) 
+                    throw new ElementNotUniqueException(nameof(User));
 
+                var user = new User
+                {
+                    FirstName = request.FirstName,
+                    LastName = request.LastName,
+                    Email = request.Email,
+                    Password = request.Password
+                };
 
-            user.Password = HashPassword(request.Password);
+                user.Password = HashPassword(request.Password);
 
+                await repository.AddAsync(user, cancellationToken);                
 
-            //await guest.InternalValidate(_validationProvider, cancellationToken);
-            await repository.AddAsync(user, cancellationToken);
+                return Unit.Value;
+            }
+            else
+            {
+                var userId = (int)_currentUserService.GetUserId;
 
-            return user.Id;
+                var user = await _appDbContext.Users.GetFiltered().GetFirstOrDefaultAsync(u => u.Id == userId, cancellationToken);
+
+                user.FirstName = request.FirstName;
+                user.LastName = request.LastName;
+                user.Email = request.Email;
+                user.Password = HashPassword(request.Password);
+
+                await repository.UpdateAsync(user, cancellationToken);
+
+                return Unit.Value;
+            }                                               
         }
 
         private string HashPassword(string password)

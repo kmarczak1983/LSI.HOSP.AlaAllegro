@@ -1,21 +1,15 @@
-﻿using LSI.HOSP.AlaAllegro.Domain.Entities.Users;
-using LSI.HOSP.AlaAllegro.Infrastructure;
-using LSI.HOSP.AlaAllegro.Infrastructure.DataAccess;
-using LSI.HOSP.AlaAllegro.Infrastructure.DataAccess.Interfaces;
-using MediatR;
-using Microsoft.IdentityModel.Tokens;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
-using System.Linq.Expressions;
 using System.Security.Claims;
-using System.Security.Cryptography;
 using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
-using System.Xml.Linq;
+using Microsoft.IdentityModel.Tokens;
+using LSI.HOSP.AlaAllegro.Domain.Entities.Users;
+using MediatR;
+using System.Security.Cryptography;
+using System.Threading;
+using LSI.HOSP.AlaAllegro.Infrastructure.DataAccess.Interfaces;
 
 namespace LSI.HOSP.AlaAllegro.Application.Users.Commands
 {
@@ -31,7 +25,7 @@ namespace LSI.HOSP.AlaAllegro.Application.Users.Commands
         private readonly IRepository<User> repository;
          // private readonly ICustomerBaseFieldsService customerBaseFields;
        // private readonly IValidationProvider<Guest> _validationProvider;
-        private readonly AppDbContext _appDbContext;
+        //private readonly AppDbContext _appDbContext;
         private readonly AuthenticationSettings _authenticationSettings;
 
 
@@ -39,21 +33,21 @@ namespace LSI.HOSP.AlaAllegro.Application.Users.Commands
             ,
                                          //ICustomerBaseFieldsService customerBaseFields,
                                          //IValidationProvider<Guest> validationProvider,
-                                         AppDbContext appDbContext,
+                                         //AppDbContext appDbContext,
                                          AuthenticationSettings authenticationSettings)
         {
           this.repository = repository;
             //this.customerBaseFields = customerBaseFields;
             //_validationProvider = validationProvider;
 
-            _appDbContext = appDbContext;
+            //_appDbContext = appDbContext;
             _authenticationSettings = authenticationSettings;  
         }
 
         
         public async Task<string> Handle(LoginUserCommand request, CancellationToken cancellationToken)
         {
-            var user = await _appDbContext.Users.GetFirstOrDefaultAsync(u => u.Email == request.Email, cancellationToken);
+            var user = await repository.GetFirstOrDefaultAsync(u => u.Email == request.Email, cancellationToken);
 
             if (user is null) 
             {

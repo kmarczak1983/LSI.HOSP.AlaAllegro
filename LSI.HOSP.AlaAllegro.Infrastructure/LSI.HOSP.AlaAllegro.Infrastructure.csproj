@@ -16,7 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\LSI.HOSP.AlaAllegro.Domain\LSI.HOSP.AlaAllegro.Domain.csproj" />
+    <ProjectReference Include="..\LSI.HOSP.AlaAllegro.Application\LSI.HOSP.AlaAllegro.Application.csproj" />
   </ItemGroup>
 
 </Project>

@@ -5,7 +5,6 @@ using LSI.HOSP.AlaAllegro.Infrastructure.DataAccess;
 using LSI.HOSP.AlaAllegro.Infrastructure.DataAccess.Interfaces;
 using LSI.HOSP.AlaAllegro.Infrastructure.Services;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -34,28 +33,22 @@ namespace LSI.HOSP.AlaAllegro.Application.Users.Commands
 
     public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, Unit>
     {
-        private readonly IRepository<User> repository;
-        private readonly AppDbContext _appDbContext;
+        private readonly IRepository<User> repository;        
         private readonly ICurrentUserService _currentUserService;
 
 
-        public CreateUserCommandHandler(IRepository<User> repository,
-                                        AppDbContext appDbContext,
+        public CreateUserCommandHandler(IRepository<User> repository,          
                                         ICurrentUserService currentUserService)
         {
-          this.repository = repository;
-            _appDbContext = appDbContext;
+            this.repository = repository;            
             _currentUserService = currentUserService;
         }
 
         
         public async Task<Unit> Handle(CreateUserCommand request, CancellationToken cancellationToken)
-        {
+        {            
             if (_currentUserService.GetUserId is null)
             {
-                if (await repository.GetQueryable().AnyAsync(u => u.Email.Equals(request.Email),  cancellationToken)) 
-                    throw new ElementNotUniqueException(nameof(User));
-
                 var user = new User
                 {
                     FirstName = request.FirstName,
@@ -72,9 +65,9 @@ namespace LSI.HOSP.AlaAllegro.Application.Users.Commands
             }
             else
             {
-                var userId = (int)_currentUserService.GetUserId;
-
-                var user = await _appDbContext.Users.GetFiltered().GetFirstOrDefaultAsync(u => u.Id == userId, cancellationToken);
+                var currentUserId = (int)_currentUserService.GetUserId;
+                
+                var user = await repository.GetFirstOrDefaultAsync(u => u.Id == currentUserId, cancellationToken);
 
                 user.FirstName = request.FirstName;
                 user.LastName = request.LastName;

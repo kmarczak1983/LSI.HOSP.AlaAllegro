@@ -1,7 +1,5 @@
 ﻿using LSI.HOSP.AlaAllegro.Application.Users.Commands;
 using LSI.HOSP.AlaAllegro.Domain.Entities.Users;
-using LSI.HOSP.AlaAllegro.Infrastructure.DataAccess.Interfaces;
-using LSI.HOSP.AlaAllegro.Infrastructure;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -11,9 +9,11 @@ using System.Threading;
 using System.Threading.Tasks;
 using LSI.HOSP.AlaAllegro.Domain.Entities.Auctions;
 using LSI.HOSP.AlaAllegro.Application.Common;
-using LSI.HOSP.AlaAllegro.Infrastructure.Services;
-using LSI.HOSP.AlaAllegro.Infrastructure.DataAccess;
+
+
 using LSI.HOSP.AlaAllegro.Domain.Exceptions;
+using LSI.HOSP.AlaAllegro.Infrastructure.DataAccess.Interfaces;
+using LSI.HOSP.AlaAllegro.Infrastructure.Services;
 
 namespace LSI.HOSP.AlaAllegro.Application.Auctions.Commands
 {    
@@ -44,17 +44,14 @@ namespace LSI.HOSP.AlaAllegro.Application.Auctions.Commands
 
     public class CreateUpdateAuctionCommandHandler : IRequestHandler<CreateUpdateAuctionCommand, Unit>
     {
-        private readonly IRepository<Auction> repository;
-        private readonly AppDbContext _appDbContext;
+        private readonly IRepository<Auction> repository;        
         private readonly ICurrentUserService _currentUserService;
 
 
-        public CreateUpdateAuctionCommandHandler(IRepository<Auction> repository,
-                                                 AppDbContext appDbContext,
+        public CreateUpdateAuctionCommandHandler(IRepository<Auction> repository,                                         
                                                  ICurrentUserService currentUserService)
         {
-            this.repository = repository;
-            _appDbContext = appDbContext;
+            this.repository = repository;            
             _currentUserService = currentUserService;
         }
 
@@ -75,9 +72,9 @@ namespace LSI.HOSP.AlaAllegro.Application.Auctions.Commands
                 await repository.AddAsync(auction, cancellationToken);
             }
             else
-            {
-                var auction = await _appDbContext.Auctions.GetFiltered().GetFirstOrDefaultAsync(a => a.Id == auctionId, cancellationToken);
-                
+            {                
+                var auction = await repository.GetFirstOrDefaultAsync(a => a.Id == auctionId, cancellationToken);
+
                 if (auction == null)
                     throw new EntityNotFoundException(nameof(Auction));
 

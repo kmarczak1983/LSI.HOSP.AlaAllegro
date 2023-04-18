@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace LSI.HOSP.AlaAllegro.Application.Auctions.Commands
 {
-    public class CreateUpdateAuctionCommandValidator: AbstractValidator<CreateUpdateAuctionCommand>
+    public class CreateUpdateAuctionCommandCommandValidator : AbstractValidator<CreateUpdateAuctionCommand>
     {
-        public CreateUpdateAuctionCommandValidator()
+        public CreateUpdateAuctionCommandCommandValidator()
         {
             RuleFor(x => x.Title).NotEmpty();
             RuleFor(x => x.Body).NotEmpty();

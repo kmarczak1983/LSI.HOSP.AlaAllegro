@@ -1,5 +1,4 @@
-﻿using LSI.HOSP.AlaAllegro.Domain.Entities.Users;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using System.Security.Claims;
 
 namespace LSI.HOSP.AlaAllegro.Infrastructure.Services
@@ -20,16 +19,6 @@ namespace LSI.HOSP.AlaAllegro.Infrastructure.Services
         }
 
         public ClaimsPrincipal User => _httpContextAccessor.HttpContext?.User;
-
-
-        /*public int? GetUserId()
-        {
-            var user = User();
-            if (user is null)
-                return null;
-
-            return int.Parse(User.FindFirst(c => c.Type == ClaimTypes.NameIdentifier).Value);
-        }*/
 
         public int? GetUserId => User is null || User.FindFirst(c => c.Type == ClaimTypes.NameIdentifier) is null ? null : int.Parse(User.FindFirst(c => c.Type == ClaimTypes.NameIdentifier).Value);
     }

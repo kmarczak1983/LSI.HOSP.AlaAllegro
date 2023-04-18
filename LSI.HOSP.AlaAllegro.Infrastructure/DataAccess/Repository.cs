@@ -21,6 +21,15 @@ namespace LSI.HOSP.AlaAllegro.Infrastructure.DataAccess
             _dbContext = dbContext;
         }
 
+        public async Task<bool> AnyAsync(Expression<Func<TEntity, bool>> predicate)
+            => await GetQueryable().AnyAsync(predicate);
+
+        public async Task<TEntity> GetFirstOrDefaultAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken cancellationToken = new())
+            => await _dbContext.Set<TEntity>().GetFiltered().FirstOrDefaultAsync(predicate, cancellationToken);
+
+        public async Task<TEntity> GetLastModifiedOrDefaultAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken cancellationToken = new())
+            => await _dbContext.Set<TEntity>().OrderBy(c => c.LastModifiedDate).LastOrDefaultAsync(predicate, cancellationToken);
+
         public IQueryable<TEntity> GetQueryable(Expression<Func<TEntity, bool>> predicate)
         {
             return _dbContext.Set<TEntity>().Where(c => !c.IsDeleted).Where(predicate);

@@ -11,6 +11,7 @@ namespace LSI.HOSP.AlaAllegro.Infrastructure.DataAccess.Interfaces
 {
     public interface IRepository<TEntity> where TEntity : BaseEntity
     {
+        Task<bool> AnyAsync(Expression<Func<TEntity, bool>> predicate);
         IQueryable<TEntity> GetQueryable(Expression<Func<TEntity, bool>> predicate);
         
         IQueryable<TEntity> GetQueryable();  
@@ -18,5 +19,9 @@ namespace LSI.HOSP.AlaAllegro.Infrastructure.DataAccess.Interfaces
         Task<TEntity> AddAsync(TEntity entity, CancellationToken cancellationToken = new());
 
         Task<TEntity> UpdateAsync(TEntity entity, CancellationToken cancellationToken = new());
+
+        Task<TEntity> GetFirstOrDefaultAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken cancellationToken = new());
+
+        Task<TEntity> GetLastModifiedOrDefaultAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken cancellationToken = new());
     }
 }

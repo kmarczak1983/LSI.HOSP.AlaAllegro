@@ -1,8 +1,5 @@
-﻿using LSI.HOSP.AlaAllegro.Application.Users.Commands;
-using LSI.HOSP.AlaAllegro.Domain.Entities.Users;
-using LSI.HOSP.AlaAllegro.Infrastructure.DataAccess.Interfaces;
+﻿using LSI.HOSP.AlaAllegro.Infrastructure.DataAccess.Interfaces;
 using LSI.HOSP.AlaAllegro.Infrastructure.Services;
-using LSI.HOSP.AlaAllegro.Infrastructure;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -11,8 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Threading;
 using LSI.HOSP.AlaAllegro.Domain.Entities.Auctions;
-using LSI.HOSP.AlaAllegro.Infrastructure.DataAccess;
-using Microsoft.EntityFrameworkCore;
+
 
 namespace LSI.HOSP.AlaAllegro.Application.PurchaseOffers.Commands
 {
@@ -26,26 +22,25 @@ namespace LSI.HOSP.AlaAllegro.Application.PurchaseOffers.Commands
 
     public class AddPurchaseOfferCommandHandler : IRequestHandler<AddPurchaseOfferCommand, Unit>
     {
-        private readonly IRepository<PurchaseOffer> repository;
-        private readonly AppDbContext _appDbContext;
+        private readonly IRepository<PurchaseOffer> _repository;        
         private readonly ICurrentUserService _currentUserService;
 
 
         public AddPurchaseOfferCommandHandler(IRepository<PurchaseOffer> repository,
-                                        AppDbContext appDbContext,
-                                        ICurrentUserService currentUserService)
+                                              ICurrentUserService currentUserService)
         {
-            this.repository = repository;
-            _appDbContext = appDbContext;
+            _repository = repository;            
             _currentUserService = currentUserService;
         }
 
         public async Task<Unit> Handle(AddPurchaseOfferCommand request, CancellationToken cancellationToken)
-        {           
-            var lastPurchaseOffer = await repository
-                .GetQueryable(po => po.AuctionId.ToString() == request.auctionId)
-                .OrderByDescending(po => po.LastModifiedDate)
-                .FirstOrDefaultAsync(cancellationToken);           
+        {
+            //if (_repositoryAuction.AnyAsync(a => a.ID)) //TODO Sprawdzić czy istnieje aukcja
+
+            var lastPurchaseOffer = await _repository
+                .GetLastModifiedOrDefaultAsync(po => po.AuctionId.ToString() == request.auctionId, cancellationToken);
+
+            
 
             var currentUserId = (int)_currentUserService.GetUserId;
 
@@ -58,15 +53,23 @@ namespace LSI.HOSP.AlaAllegro.Application.PurchaseOffers.Commands
                     Price = Convert.ToDecimal(request.price)
                 };
 
-                await repository.AddAsync(purchaseOffer, cancellationToken);                
+
+               // var validator = new AddPurchaseOfferCommandValidator(11);
+               // var validatorResult = await validator.ValidateAsync(request);
+
+               // if (!validatorResult.IsValid)
+                 //   return Unit.Value; //(validatorResult);
+
+
+
+
+                await _repository.AddAsync(purchaseOffer, cancellationToken);                
            }
-           else if (Convert.ToDecimal(request.price) > lastPurchaseOffer.Price)
-           {                
-                var lastCurrentUserPurchaseOffer = await repository
-                    .GetQueryable(po => po.AuctionId.ToString() == request.auctionId && po.UserId == currentUserId)
-                    .OrderByDescending(po => po.LastModifiedDate)
-                    .FirstOrDefaultAsync(cancellationToken);
-                
+           else// if (Convert.ToDecimal(request.price) > lastPurchaseOffer.Price)
+           {
+                var lastCurrentUserPurchaseOffer = await _repository
+                    .GetLastModifiedOrDefaultAsync(po => po.AuctionId.ToString() == request.auctionId && po.UserId == currentUserId, cancellationToken);
+                    
                 if (lastCurrentUserPurchaseOffer is null) 
                 {
                     var purchaseOffer = new PurchaseOffer
@@ -76,17 +79,17 @@ namespace LSI.HOSP.AlaAllegro.Application.PurchaseOffers.Commands
                         Price = Convert.ToDecimal(request.price)
                     };
 
-                    await repository.AddAsync(purchaseOffer, cancellationToken);
+                    await _repository.AddAsync(purchaseOffer, cancellationToken);
                 }
                 {
                     lastCurrentUserPurchaseOffer.Price = Convert.ToDecimal(request.price);
-                    await repository.UpdateAsync(lastCurrentUserPurchaseOffer, cancellationToken);
+                    await _repository.UpdateAsync(lastCurrentUserPurchaseOffer, cancellationToken);
                 }                
            }           
-           else
+           /*else
            {
                 throw new Exception("New price must by bitter then last");
-           }                        
+           } */                       
 
             return Unit.Value;
         }

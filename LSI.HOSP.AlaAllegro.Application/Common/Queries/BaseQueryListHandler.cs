@@ -1,7 +1,6 @@
 ﻿using LSI.HOSP.AlaAllegro.Domain.Entities;
 using LSI.HOSP.AlaAllegro.Infrastructure.DataAccess.Interfaces;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,12 +21,13 @@ namespace LSI.HOSP.AlaAllegro.Application.Common.Queries
         }
         public virtual async Task<List<TResult>> Handle(TQuery request, CancellationToken cancellationToken)
         {
-            return await Query(request).Select(Map()).ToListAsync(cancellationToken);
+            return/* await */Query(request).Select(Map()).ToList();
+                //ToListAsync(cancellationToken);
         }
 
         protected abstract Expression<Func<TEntity, TResult>> Map();
 
         protected virtual IQueryable<TEntity> Query(TQuery request)
-            => _repository.GetQueryable().Where(c => !c.IsDeleted).AsNoTracking();
+            => _repository.GetQueryable().Where(c => !c.IsDeleted);//.AsNoTracking();
     }
 }

@@ -1,9 +1,11 @@
 ﻿using LSI.HOSP.AlaAllegro.Application.Common.Commands;
 using LSI.HOSP.AlaAllegro.Domain.Entities;
+using LSI.HOSP.AlaAllegro.Domain.Entities.Auctions;
 using LSI.HOSP.AlaAllegro.Infrastructure;
 using LSI.HOSP.AlaAllegro.Infrastructure.DataAccess;
+using LSI.HOSP.AlaAllegro.Infrastructure.DataAccess.Interfaces;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
+//using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,43 +24,34 @@ namespace LSI.HOSP.AlaAllegro.Application.Auctions.Queries
         }
 
         public class GetAuctionByIdQueryHandler : IRequestHandler<GetAuctionByIdQuery, AuctionViewModel>
-        {
-            private readonly AppDbContext _context;
-            
-            public GetAuctionByIdQueryHandler(AppDbContext context)
+        {            
+            private readonly IAuctionRepository _auctionRepository;
+            private readonly IPurchaseOfferRepository _purchaseOfferRepository;
+
+            public GetAuctionByIdQueryHandler(IAuctionRepository auctionRepository, IPurchaseOfferRepository purchaseOfferRepository)
             {
-                _context = context;
+                _auctionRepository = auctionRepository;
+                _purchaseOfferRepository = purchaseOfferRepository;
             }
 
             public async Task<AuctionViewModel> Handle(GetAuctionByIdQuery request, CancellationToken cancellationToken)
             {
-                var auction = await _context
-                    .Auctions
-                    .GetFiltered()                    
-                    .Include(a => a.Author)
-                    .Select(a => new { 
-                        a.Id, a.Title, a.Body, a.CreatedDate, a.LastModifiedDate, a.StartPrice,
-                        FullName = a.Author.FirstName + " " + a.Author.LastName, a.Author.Email, a.Author.PhoneNumber })
-                    .GetFirstOrDefaultAsync(a => a.Id == request.Id, cancellationToken);
+                var auction = await _auctionRepository.Get(request.Id, cancellationToken);
 
-                var lastPurchaseOffer = await _context
-                    .PurchaseOffers
-                    .GetFiltered()
-                    .Include(po => po.User)
-                    .OrderByDescending(po => po.CreatedDate)
-                    .Select(po => new { po.Price, po.AuctionId, FullName = po.User.FirstName + " " + po.User.LastName })
-                    
-                    .GetFirstOrDefaultAsync(po => po.AuctionId == auction.Id, cancellationToken, false);
+                var lastPurchaseOffer = await _purchaseOfferRepository.GetLast(auction.Id, cancellationToken);                    
 
                 return new AuctionViewModel(
                         auction.Id.ToString(), 
-                        auction.Title, 
-                        new AuctionViewModel.UserCreatedBy(auction.FullName, auction.Email, auction.PhoneNumber), 
+                        auction.Title,                        
+                        new AuctionViewModel.UserCreatedBy(
+                                auction.Author.FirstName + " " + auction.Author.LastName,
+                                auction.Author.Email, 
+                                auction.Author.PhoneNumber),
                         auction.Body,
                         auction.LastModifiedDate,
                         auction.CreatedDate,
-                        lastPurchaseOffer is null ? auction.StartPrice.ToString() : lastPurchaseOffer.Price.ToString(),
-                        lastPurchaseOffer is null ? null : lastPurchaseOffer.FullName);
+                        lastPurchaseOffer is null ? auction.StartPrice.ToString() : lastPurchaseOffer.Price.ToString(),                        
+                        lastPurchaseOffer is null ? null : lastPurchaseOffer.User.FirstName + " " + lastPurchaseOffer.User.LastName);
             }
         }
     }

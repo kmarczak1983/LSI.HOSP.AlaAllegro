@@ -26,7 +26,10 @@ namespace LSI.HOSP.AlaAllegro.Infrastructure
                 return context;
             });
             
-            services.AddTransient(typeof(IRepository<>), typeof(Repository<>));            
+            services.AddTransient(typeof(IRepository<>), typeof(Repository<>));
+            services.AddTransient(typeof(IAuctionRepository), typeof(AuctionRepository));
+            services.AddTransient(typeof(IPurchaseOfferRepository), typeof(PurchaseOfferRepository));
+
         }
     }
 }

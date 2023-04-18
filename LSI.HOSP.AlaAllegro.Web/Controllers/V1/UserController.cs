@@ -20,9 +20,9 @@ namespace LSI.HOSP.AlaAllegro.Web.Controllers.V1
         {
         }
 
-        [HttpGet("{id}")]
-        public Task<IActionResult> GetUserById(int id, CancellationToken cancellationToken)
-           => ExecuteQuery(new GetUserByIdQuery(id), cancellationToken);
+        [HttpGet]
+        public Task<IActionResult> GetUser([FromQuery] GetUserQuery? query, CancellationToken cancellationToken)
+           => ExecuteQuery(query, cancellationToken);        
 
         [HttpPut]
         [AllowAnonymous]

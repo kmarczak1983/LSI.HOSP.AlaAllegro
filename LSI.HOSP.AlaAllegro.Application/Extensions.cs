@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
 using FluentValidation.AspNetCore;
 using LSI.HOSP.AlaAllegro.Application.Auctions.Commands;
-using LSI.HOSP.AlaAllegro.Application.Common;
+using LSI.HOSP.AlaAllegro.Application.PurchaseOffers.Commands;
 using LSI.HOSP.AlaAllegro.Application.Users.Commands;
 using LSI.HOSP.AlaAllegro.Infrastructure.Services;
 using MediatR;
@@ -20,8 +20,16 @@ namespace LSI.HOSP.AlaAllegro.Application
 
             services.AddFluentValidation();
 
+            services.AddValidatorsFromAssemblyContaining<CreateUserCommandValidator>();
+            //    .AddFluentValidationAutoValidation();
+                //.AddFluentValidationClientsideAdapters();
+                /*
+            
+
             services.AddScoped<IValidator<CreateUserCommand>, CreateUserCommandValidator>();
-            services.AddScoped<IValidator<CreateUpdateAuctionCommand>, CreateUpdateAuctionCommandValidator>(); 
+            services.AddScoped<IValidator<CreateUpdateAuctionCommand>, CreateUpdateAuctionCommandCommandValidator>();
+            services.AddScoped<IValidator<AddPurchaseOfferCommand>, AddPurchaseOfferCommandValidator>();
+            */
 
             services.AddScoped<ICurrentUserService, CurrentUserService>();
         }

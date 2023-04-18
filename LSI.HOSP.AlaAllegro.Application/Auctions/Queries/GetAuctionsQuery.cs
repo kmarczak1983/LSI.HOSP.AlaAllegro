@@ -4,7 +4,6 @@ using LSI.HOSP.AlaAllegro.Domain.Entities.Users;
 using LSI.HOSP.AlaAllegro.Infrastructure.DataAccess.Interfaces;
 using MathNet.Numerics.Statistics.Mcmc;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -34,7 +33,7 @@ namespace LSI.HOSP.AlaAllegro.Application.Auctions.Queries
                 a.Title,
                 a.Author.FirstName + " " + a.Author.LastName,
                 a.LastModifiedDate.ToString(),
-                a.PurchaseOffers != null && a.PurchaseOffers.Any() ? 
+                a.PurchaseOffers != null && a.PurchaseOffers.Any() ? //TODO najoptymalniej było by trzymać ostatnią cenę w tablie Auctions
                     a.PurchaseOffers.OrderByDescending(po => po.CreatedDate).Last().Price.ToString() : a.StartPrice.ToString()
                 );
 

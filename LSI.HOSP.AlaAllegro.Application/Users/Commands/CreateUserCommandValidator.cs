@@ -13,7 +13,7 @@ namespace LSI.HOSP.AlaAllegro.Application.Users.Commands
                 .EmailAddress()
                 .Custom((value, context) =>
                  {
-                     var existingUser = repository.GetFirstOrDefaultAsync(u => u.Email == value);
+                     var existingUser = repository.GetFirstOrDefaultAsync(u => u.Email == value).Result;
                      if (existingUser != null)
                      {
                          context.AddFailure($"{value} is not unique e-mail for user");

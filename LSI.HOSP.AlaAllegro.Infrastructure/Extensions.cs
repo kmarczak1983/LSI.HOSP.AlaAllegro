@@ -20,7 +20,8 @@ namespace LSI.HOSP.AlaAllegro.Infrastructure
             {
                 var connectionString = configuration.GetConnectionString("AlaAllegroConnectionString");                    
                 var options = new DbContextOptionsBuilder<AppDbContext>()
-                    .UseSqlServer(connectionString)
+                    .UseNpgsql(connectionString)
+                    //.UseSqlServer(connectionString)
                     .Options;
                 var context = new AppDbContext(options);
                 return context;

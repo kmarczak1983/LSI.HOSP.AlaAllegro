@@ -22,32 +22,21 @@ namespace LSI.HOSP.AlaAllegro.Application.Users.Commands
 
     public class LoginUserCommandHandler : IRequestHandler<LoginUserCommand, string>
     {
-        private readonly IRepository<User> repository;
-         // private readonly ICustomerBaseFieldsService customerBaseFields;
-       // private readonly IValidationProvider<Guest> _validationProvider;
-        //private readonly AppDbContext _appDbContext;
+        private readonly IRepository<User> _repository;
         private readonly AuthenticationSettings _authenticationSettings;
 
 
-        public LoginUserCommandHandler(IRepository<User> repository
-            ,
-                                         //ICustomerBaseFieldsService customerBaseFields,
-                                         //IValidationProvider<Guest> validationProvider,
-                                         //AppDbContext appDbContext,
-                                         AuthenticationSettings authenticationSettings)
+        public LoginUserCommandHandler(IRepository<User> repository,
+                                       AuthenticationSettings authenticationSettings)
         {
-          this.repository = repository;
-            //this.customerBaseFields = customerBaseFields;
-            //_validationProvider = validationProvider;
-
-            //_appDbContext = appDbContext;
+            _repository = repository;            
             _authenticationSettings = authenticationSettings;  
         }
 
         
         public async Task<string> Handle(LoginUserCommand request, CancellationToken cancellationToken)
         {
-            var user = await repository.GetFirstOrDefaultAsync(u => u.Email == request.Email, cancellationToken);
+            var user = await _repository.GetFirstOrDefaultAsync(u => u.Email == request.Email, cancellationToken);
 
             if (user is null) 
             {

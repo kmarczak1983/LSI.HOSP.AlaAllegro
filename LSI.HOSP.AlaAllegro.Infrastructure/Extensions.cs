@@ -4,6 +4,7 @@ using LSI.HOSP.AlaAllegro.Infrastructure.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,11 +19,12 @@ namespace LSI.HOSP.AlaAllegro.Infrastructure
         {               
             services.AddScoped(serviceProvider =>
             {
-                var connectionString = configuration.GetConnectionString("AlaAllegroConnectionString");                    
+                var connectionString = configuration.GetConnectionString("AlaAllegroConnectionString");
                 var options = new DbContextOptionsBuilder<AppDbContext>()
                     .UseNpgsql(connectionString)
+                    .LogTo(Console.WriteLine, LogLevel.Information)
                     //.UseSqlServer(connectionString)
-                    .Options;
+                    .Options;                    
                 var context = new AppDbContext(options);
                 return context;
             });

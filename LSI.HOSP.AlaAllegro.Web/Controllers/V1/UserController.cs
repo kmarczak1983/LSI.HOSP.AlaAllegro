@@ -26,7 +26,7 @@ namespace LSI.HOSP.AlaAllegro.Web.Controllers.V1
 
         [HttpPut]
         [AllowAnonymous]
-        public Task<IActionResult> UpdateUser([FromBody] CreateUserCommand command, CancellationToken cancellation)
+        public Task<IActionResult> UpdateUser([FromBody] CreateUpdateUserCommand command, CancellationToken cancellation)
             => ExecuteCommandNoContent(command, cancellation);
 
         [HttpPost("login")]

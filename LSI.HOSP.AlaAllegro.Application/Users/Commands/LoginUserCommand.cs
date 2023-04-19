@@ -25,7 +25,6 @@ namespace LSI.HOSP.AlaAllegro.Application.Users.Commands
         private readonly IRepository<User> _repository;
         private readonly AuthenticationSettings _authenticationSettings;
 
-
         public LoginUserCommandHandler(IRepository<User> repository,
                                        AuthenticationSettings authenticationSettings)
         {
@@ -43,7 +42,7 @@ namespace LSI.HOSP.AlaAllegro.Application.Users.Commands
                 throw new Exception("aaa");
             }
 
-            var password = HashPassword(request.Password);
+            var password = UserHashPassword.HashPassword(request.Password);
 
             if (!(password == user.Password))
             {
@@ -69,21 +68,6 @@ namespace LSI.HOSP.AlaAllegro.Application.Users.Commands
 
             var tokenHandler = new JwtSecurityTokenHandler();
             return tokenHandler.WriteToken(token);
-        }
-
-        private string HashPassword(string password)
-        {
-            SHA256 sha256 = SHA256Managed.Create();            
-            UTF8Encoding objUtf8 = new UTF8Encoding();            
-            return Convert.ToBase64String(sha256.ComputeHash(objUtf8.GetBytes(password)));
-        }
-        /*
-        protected async Task CheckUniqueness(Expression<Func<Guest, bool>> expression)
-        {
-            var exists = await repository.AnyAsync(expression);
-          if (exists)
-                throw new ElementNotUniqueException(typeof(Guest).Name); // nameof doesn't work with generic
-        }
-       */
+        }            
     }
 }

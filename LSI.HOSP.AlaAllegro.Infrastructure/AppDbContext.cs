@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Diagnostics;
 
 namespace LSI.HOSP.AlaAllegro.Infrastructure
 {
@@ -60,6 +61,11 @@ namespace LSI.HOSP.AlaAllegro.Infrastructure
                 eb.Property(u => u.Email).IsRequired();
                 eb.Property(u => u.Password).IsRequired();
             });
+        }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            ;// optionsBuilder.LogTo(message => Debug.WriteLine(message));
         }
     }
 }

@@ -1,6 +1,8 @@
-﻿using FluentValidation;
+﻿using AutoMapper;
+using FluentValidation;
 using FluentValidation.AspNetCore;
 using LSI.HOSP.AlaAllegro.Application.Auctions.Commands;
+using LSI.HOSP.AlaAllegro.Application.Mappings;
 using LSI.HOSP.AlaAllegro.Application.PurchaseOffers.Commands;
 using LSI.HOSP.AlaAllegro.Application.Users.Commands;
 using LSI.HOSP.AlaAllegro.Infrastructure.Services;
@@ -18,13 +20,26 @@ namespace LSI.HOSP.AlaAllegro.Application
         {
             services.AddMediatR(Assembly.GetExecutingAssembly());
 
-            services.AddFluentValidation();
+            //services.AddFluentValidation();
 
-            services.AddValidatorsFromAssemblyContaining<CreateUserCommandValidator>();
+            services.AddValidatorsFromAssemblyContaining<CreateUpdateUserCommandValidator>()
+                .AddFluentValidation();
+
+            services.AddScoped(provider => new MapperConfiguration(cfg =>
+            {
+                var scope = provider.CreateScope();
+                //var userContext = scope.ServiceProvider.GetRequiredService<IUserContext>();
+                cfg.AddProfile(new UserMappingProfile());
+            }).CreateMapper()
+            );
+
             //    .AddFluentValidationAutoValidation();
-                //.AddFluentValidationClientsideAdapters();
-                /*
+            //.AddFluentValidationClientsideAdapters();
+
+            /*
             
+
+
 
             services.AddScoped<IValidator<CreateUserCommand>, CreateUserCommandValidator>();
             services.AddScoped<IValidator<CreateUpdateAuctionCommand>, CreateUpdateAuctionCommandCommandValidator>();

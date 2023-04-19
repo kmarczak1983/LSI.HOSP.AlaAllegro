@@ -1,4 +1,5 @@
 ﻿using LSI.HOSP.AlaAllegro.Domain.Entities.Auctions;
+using MathNet.Numerics.Distributions;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -28,6 +29,6 @@ namespace LSI.HOSP.AlaAllegro.Domain.Entities.Users
 
         public virtual List<Auction> Auctions { get; set; }
 
-        public virtual List<PurchaseOffer> PurchaseOffers { get; set; }
+        public virtual List<PurchaseOffer> PurchaseOffers { get; set; } 
     }
 }

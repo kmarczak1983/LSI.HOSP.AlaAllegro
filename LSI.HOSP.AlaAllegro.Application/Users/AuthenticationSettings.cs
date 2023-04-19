@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LSI.HOSP.AlaAllegro.Application
+namespace LSI.HOSP.AlaAllegro.Application.Users
 {
     public class AuthenticationSettings
     {

@@ -16,6 +16,7 @@ using System.Text.Json.Serialization;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using LSI.HOSP.AlaAllegro.Infrastructure.Services;
+using LSI.HOSP.AlaAllegro.Application.Users;
 
 namespace LSI.HOSP.AlaAllegro.Web
 {

@@ -1,4 +1,5 @@
-﻿using LSI.HOSP.AlaAllegro.Domain.Entities.Users;
+﻿using AutoMapper;
+using LSI.HOSP.AlaAllegro.Domain.Entities.Users;
 using LSI.HOSP.AlaAllegro.Domain.Exceptions;
 using LSI.HOSP.AlaAllegro.Infrastructure;
 using LSI.HOSP.AlaAllegro.Infrastructure.DataAccess;
@@ -18,7 +19,7 @@ using System.Xml.Linq;
 
 namespace LSI.HOSP.AlaAllegro.Application.Users.Commands
 {
-    public class CreateUserCommand : IRequest<Unit>
+    public class CreateUpdateUserCommand : IRequest<Unit>
     {
         public string FirstName { get; set; }
         
@@ -28,27 +29,30 @@ namespace LSI.HOSP.AlaAllegro.Application.Users.Commands
 
         public string Password { get; set; }
 
-        public string? Phone { get; set; }
+        public string? Phone { get; set; }        
     }
 
-    public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, Unit>
+    public class CreateUserCommandHandler : IRequestHandler<CreateUpdateUserCommand, Unit>
     {
         private readonly IRepository<User> repository;        
         private readonly ICurrentUserService _currentUserService;
-
+        private readonly IMapper _mapper;
 
         public CreateUserCommandHandler(IRepository<User> repository,          
-                                        ICurrentUserService currentUserService)
+                                        ICurrentUserService currentUserService,
+                                        IMapper mapper)
         {
             this.repository = repository;            
             _currentUserService = currentUserService;
+            _mapper = mapper;
         }
 
         
-        public async Task<Unit> Handle(CreateUserCommand request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(CreateUpdateUserCommand request, CancellationToken cancellationToken)
         {            
             if (_currentUserService.GetUserId is null)
             {
+                /*
                 var user = new User
                 {
                     FirstName = request.FirstName,
@@ -56,23 +60,28 @@ namespace LSI.HOSP.AlaAllegro.Application.Users.Commands
                     Email = request.Email,
                     Password = request.Password
                 };
-
-                user.Password = HashPassword(request.Password);
+                user.Password = UserHashPassword.HashPassword(request.Password);
+                */
+                var user = _mapper.Map<User>(request);                
 
                 await repository.AddAsync(user, cancellationToken);                
 
                 return Unit.Value;
             }
             else
-            {
+            {                
                 var currentUserId = (int)_currentUserService.GetUserId;
                 
                 var user = await repository.GetFirstOrDefaultAsync(u => u.Id == currentUserId, cancellationToken);
-
+                
                 user.FirstName = request.FirstName;
                 user.LastName = request.LastName;
                 user.Email = request.Email;
-                user.Password = HashPassword(request.Password);
+                if (request.Phone != null) 
+                { 
+                    user.PhoneNumber = request.Phone;
+                }
+                user.Password = UserHashPassword.HashPassword(request.Password);                
 
                 await repository.UpdateAsync(user, cancellationToken);
 
@@ -80,19 +89,6 @@ namespace LSI.HOSP.AlaAllegro.Application.Users.Commands
             }                                               
         }
 
-        private string HashPassword(string password)
-        {
-            SHA256 sha256 = SHA256Managed.Create();            
-            UTF8Encoding objUtf8 = new UTF8Encoding();            
-            return Convert.ToBase64String(sha256.ComputeHash(objUtf8.GetBytes(password)));
-        }
-        /*
-        protected async Task CheckUniqueness(Expression<Func<Guest, bool>> expression)
-        {
-            var exists = await repository.AnyAsync(expression);
-          if (exists)
-                throw new ElementNotUniqueException(typeof(Guest).Name); // nameof doesn't work with generic
-        }
-       */
+    
     }
 }

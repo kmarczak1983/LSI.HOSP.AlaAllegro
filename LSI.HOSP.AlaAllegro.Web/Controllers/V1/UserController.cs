@@ -21,8 +21,12 @@ namespace LSI.HOSP.AlaAllegro.Web.Controllers.V1
         }
 
         [HttpGet]
-        public Task<IActionResult> GetUser([FromQuery] GetUserQuery? query, CancellationToken cancellationToken)
-           => ExecuteQuery(query, cancellationToken);        
+        public Task<IActionResult> GetUser([FromQuery] GetUserQuery query, CancellationToken cancellationToken)
+           => ExecuteQuery(query, cancellationToken);
+
+        [HttpGet("all")]
+        public Task<IActionResult> GetUsersAll([FromQuery] GetUsersAllQuery query, CancellationToken cancellationToken)
+           => ExecuteQuery(query, cancellationToken);
 
         [HttpPut]
         [AllowAnonymous]

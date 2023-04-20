@@ -65,7 +65,7 @@ namespace LSI.HOSP.AlaAllegro.Application.PurchaseOffers.Commands
 
                 await _repository.AddAsync(purchaseOffer, cancellationToken);                
            }
-           else// if (Convert.ToDecimal(request.price) > lastPurchaseOffer.Price)
+           else
            {
                 var lastCurrentUserPurchaseOffer = await _repository
                     .GetLastModifiedOrDefaultAsync(po => po.AuctionId.ToString() == request.auctionId && po.UserId == currentUserId, cancellationToken);
@@ -81,15 +81,12 @@ namespace LSI.HOSP.AlaAllegro.Application.PurchaseOffers.Commands
 
                     await _repository.AddAsync(purchaseOffer, cancellationToken);
                 }
+                else
                 {
                     lastCurrentUserPurchaseOffer.Price = Convert.ToDecimal(request.price);
                     await _repository.UpdateAsync(lastCurrentUserPurchaseOffer, cancellationToken);
                 }                
-           }           
-           /*else
-           {
-                throw new Exception("New price must by bitter then last");
-           } */                       
+           }                               
 
             return Unit.Value;
         }

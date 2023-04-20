@@ -33,10 +33,10 @@ namespace LSI.HOSP.AlaAllegro.Application.Auctions.Queries
                 a.Title,
                 a.Author.FirstName + " " + a.Author.LastName,
                 a.LastModifiedDate.ToString(),
-                a.PurchaseOffers != null && a.PurchaseOffers.Any() ? //TODO najoptymalniej było by trzymać ostatnią cenę w tablie Auctions
-                    a.PurchaseOffers.OrderByDescending(po => po.CreatedDate).Last().Price.ToString() : a.StartPrice.ToString()
+                a.PurchaseOffers != null && a.PurchaseOffers.Any() ? //TODO najoptymalniej było by trzymać ostatnią cenę w tabeli Auctions
+                    a.PurchaseOffers.OrderBy(po => po.LastModifiedDate).Last().Price.ToString() : a.StartPrice.ToString()
                 );
-
+        
         /*
 
         public GetAuctionsQueryHandler(IRepository<Auction> repository) : base(repository)

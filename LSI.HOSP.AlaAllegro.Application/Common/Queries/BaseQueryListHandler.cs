@@ -21,8 +21,7 @@ namespace LSI.HOSP.AlaAllegro.Application.Common.Queries
         }
         public virtual async Task<List<TResult>> Handle(TQuery request, CancellationToken cancellationToken)
         {
-            return/* await */Query(request).Select(Map()).ToList();
-                //ToListAsync(cancellationToken);
+            return Query(request).Select(Map()).ToList();               
         }
 
         protected abstract Expression<Func<TEntity, TResult>> Map();

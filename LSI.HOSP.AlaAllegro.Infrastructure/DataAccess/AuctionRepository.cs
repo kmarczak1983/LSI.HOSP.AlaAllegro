@@ -24,7 +24,7 @@ namespace LSI.HOSP.AlaAllegro.Infrastructure.DataAccess
         {
             return await _dbContext.Auctions
                 .GetFiltered()
-                .Include(a => a.Author)                                
+                .Include(a => a.Author)
                 .GetFirstOrDefaultAsync(a => a.Id == id, cancellationToken);
         }
     }

@@ -1,5 +1,6 @@
 ﻿using LSI.HOSP.AlaAllegro.Domain.Entities;
 using LSI.HOSP.AlaAllegro.Domain.Exceptions;
+using MathNet.Numerics.Statistics.Mcmc;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -34,8 +35,7 @@ namespace LSI.HOSP.AlaAllegro.Infrastructure.DataAccess
                 if (entity is null)
                     throw new EntityNotFoundException(typeof(TEntity).Name);
             }
-
             return entity;
-        }
+        }             
     }
 }

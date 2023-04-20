@@ -4,10 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LSI.HOSP.AlaAllegro.Application.Common.Commands
+namespace LSI.HOSP.AlaAllegro.Application.Mappings
 {
-    public class BaseCommand<T>
+    internal class AuctionMappingProfile
     {
-        public T Id { get; set; }
     }
 }

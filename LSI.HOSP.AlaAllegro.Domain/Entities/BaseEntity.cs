@@ -15,8 +15,15 @@ namespace LSI.HOSP.AlaAllegro.Domain.Entities
 
     public class BaseEntity
     {
-        public DateTime CreatedDate { get; set; }
+        public DateTime CreatedDate { get; set; } = DateTime.UtcNow;
 
-        public bool IsDeleted { get; set; }
-    }
+        public DateTime LastModifiedDate { get; set; } = DateTime.UtcNow;
+
+        public bool IsDeleted { get; set; } = false;
+
+        public virtual void DeleteRecord()
+        {
+            IsDeleted = true;
+        }
+    }   
 }

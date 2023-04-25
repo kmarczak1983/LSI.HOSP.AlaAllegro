@@ -13,6 +13,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LSI.HOSP.AlaAllegro.Infrast
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LSI.HOSP.AlaAllegro.Web", "LSI.HOSP.AlaAllegro.Web\LSI.HOSP.AlaAllegro.Web.csproj", "{9DBF08E7-CB3B-4B56-A9A2-7AC453DAE309}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LSI.HOSP.AlaAllegro.Tests.Unit", "LSI.HOSP.AlaAllegro.Tests.Unit\LSI.HOSP.AlaAllegro.Tests.Unit.csproj", "{1A35C292-B2E9-42F0-A717-81F306A621C3}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LSI.HOSP.AlaAllegro.Tests.Integration", "TestProject1\LSI.HOSP.AlaAllegro.Tests.Integration.csproj", "{24A3DFF7-D35A-4AAD-8EDF-DAE938C99222}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

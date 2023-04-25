@@ -1,11 +1,11 @@
+using NUnit.Framework;
 using System;
-using Xunit;
 
 namespace LSI.HOSP.AlaAllegro.Tests.Unit
 {
     public class UnitTest1
     {
-        [Fact]
+        [Test]
         public void Test1()
         {
 

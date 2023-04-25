@@ -15,9 +15,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LSI.HOSP.AlaAllegro.Web", "
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{B1DD3EE7-400F-4C46-B590-3456D574328B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LSI.HOSP.AlaAllegro.Tests.Unit", "LSI.HOSP.AlaAllegro.Tests.Unit\LSI.HOSP.AlaAllegro.Tests.Unit.csproj", "{1A35C292-B2E9-42F0-A717-81F306A621C3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LSI.HOSP.AlaAllegro.Tests.Unit", "LSI.HOSP.AlaAllegro.Tests.Unit\LSI.HOSP.AlaAllegro.Tests.Unit.csproj", "{1A35C292-B2E9-42F0-A717-81F306A621C3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestProject1", "TestProject1\TestProject1.csproj", "{24A3DFF7-D35A-4AAD-8EDF-DAE938C99222}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LSI.HOSP.AlaAllegro.Tests.Integration", "TestProject1\LSI.HOSP.AlaAllegro.Tests.Integration.csproj", "{24A3DFF7-D35A-4AAD-8EDF-DAE938C99222}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

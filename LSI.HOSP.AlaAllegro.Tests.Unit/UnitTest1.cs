@@ -9,6 +9,7 @@ namespace LSI.HOSP.AlaAllegro.Tests.Unit
         public void Test1()
         {
             //bugfix/GO-1
+            //bugfix/GO-2
         }
     }
 }

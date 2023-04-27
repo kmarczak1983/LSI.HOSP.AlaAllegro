@@ -8,7 +8,7 @@ namespace LSI.HOSP.AlaAllegro.Tests.Unit
         [Test]
         public void Test1()
         {
-
+            //bugfix/GO-1
         }
     }
 }

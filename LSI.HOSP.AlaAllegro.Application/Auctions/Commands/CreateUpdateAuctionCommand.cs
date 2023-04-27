@@ -33,7 +33,7 @@ namespace LSI.HOSP.AlaAllegro.Application.Auctions.Commands
 
         public CreateUpdateAuctionCommand(Guid id)
         {
-            Id = (Guid)id;
+            Id = id;
         }
         
         public Guid GetGuid()

@@ -22,10 +22,10 @@ namespace LSI.HOSP.AlaAllegro.Application.PurchaseOffers.Commands
             _repositoryPurchaseOffer = repositoryPurchaseOffer;
             _repositoryAuction = repositoryAuction;
 
-            RuleFor(x => x.auctionId)
+            RuleFor(x => x.AuctionId)
                 .NotEmpty();
 
-            RuleFor(x => x.price)
+            RuleFor(x => x.Price)
                 .NotEmpty();
 
             RuleFor(x => x)                
@@ -35,12 +35,12 @@ namespace LSI.HOSP.AlaAllegro.Application.PurchaseOffers.Commands
 
         private async Task<bool> IsHigherOrEqualOfferExist(AddPurchaseOfferCommand c, CancellationToken cancellationToken)
         {
-            return !await _repositoryPurchaseOffer.AnyAsync(po => po.AuctionId.ToString() == c.auctionId && po.Price >= Convert.ToDecimal(c.price));
+            return !await _repositoryPurchaseOffer.AnyAsync(po => po.AuctionId.ToString() == c.AuctionId && po.Price >= Convert.ToDecimal(c.Price));
         }
 
         private async Task<bool> IsAuctionStartPriceHigherOrEqual(AddPurchaseOfferCommand c, CancellationToken cancellationToken)
         {
-            return !await _repositoryAuction.AnyAsync(po => po.Id.ToString() == c.auctionId && po.StartPrice >= Convert.ToDecimal(c.price));
+            return !await _repositoryAuction.AnyAsync(po => po.Id.ToString() == c.AuctionId && po.StartPrice >= Convert.ToDecimal(c.Price));
         }
     }
 }

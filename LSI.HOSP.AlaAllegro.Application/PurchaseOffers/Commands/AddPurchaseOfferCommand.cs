@@ -14,9 +14,9 @@ namespace LSI.HOSP.AlaAllegro.Application.PurchaseOffers.Commands
 {
     public class AddPurchaseOfferCommand : IRequest<Unit>
     {
-        public string auctionId { get; set; }
+        public string AuctionId { get; set; }
 
-        public string price { get; set; }
+        public string Price { get; set; }
 
     }
 
@@ -38,7 +38,7 @@ namespace LSI.HOSP.AlaAllegro.Application.PurchaseOffers.Commands
             //if (_repositoryAuction.AnyAsync(a => a.ID)) //TODO Sprawdzić czy istnieje aukcja
 
             var lastPurchaseOffer = await _repository
-                .GetLastModifiedOrDefaultAsync(po => po.AuctionId.ToString() == request.auctionId, cancellationToken);
+                .GetLastModifiedOrDefaultAsync(po => po.AuctionId == Guid.Parse(request.AuctionId), cancellationToken);
 
             
 
@@ -49,8 +49,8 @@ namespace LSI.HOSP.AlaAllegro.Application.PurchaseOffers.Commands
                 var purchaseOffer = new PurchaseOffer
                 {
                     UserId = currentUserId,
-                    AuctionId = Guid.Parse(request.auctionId),
-                    Price = Convert.ToDecimal(request.price)
+                    AuctionId = Guid.Parse(request.AuctionId),
+                    Price = Convert.ToDecimal(request.Price)
                 };
 
 
@@ -68,22 +68,22 @@ namespace LSI.HOSP.AlaAllegro.Application.PurchaseOffers.Commands
            else
            {
                 var lastCurrentUserPurchaseOffer = await _repository
-                    .GetLastModifiedOrDefaultAsync(po => po.AuctionId.ToString() == request.auctionId && po.UserId == currentUserId, cancellationToken);
+                    .GetLastModifiedOrDefaultAsync(po => po.AuctionId.ToString() == request.AuctionId && po.UserId == currentUserId, cancellationToken);
                     
                 if (lastCurrentUserPurchaseOffer is null) 
                 {
                     var purchaseOffer = new PurchaseOffer
                     {
                         UserId = currentUserId,
-                        AuctionId = Guid.Parse(request.auctionId),
-                        Price = Convert.ToDecimal(request.price)
+                        AuctionId = Guid.Parse(request.AuctionId),
+                        Price = Convert.ToDecimal(request.Price)
                     };
 
                     await _repository.AddAsync(purchaseOffer, cancellationToken);
                 }
                 else
                 {
-                    lastCurrentUserPurchaseOffer.Price = Convert.ToDecimal(request.price);
+                    lastCurrentUserPurchaseOffer.Price = Convert.ToDecimal(request.Price);
                     await _repository.UpdateAsync(lastCurrentUserPurchaseOffer, cancellationToken);
                 }                
            }                               

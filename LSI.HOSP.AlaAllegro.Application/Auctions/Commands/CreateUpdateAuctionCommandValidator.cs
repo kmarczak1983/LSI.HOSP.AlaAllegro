@@ -1,9 +1,6 @@
 ﻿using FluentValidation;
+using LSI.HOSP.AlaAllegro.Infrastructure.DataAccess.Interfaces;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace LSI.HOSP.AlaAllegro.Application.Auctions.Commands
 {
@@ -11,9 +8,21 @@ namespace LSI.HOSP.AlaAllegro.Application.Auctions.Commands
     {
         public CreateUpdateAuctionCommandCommandValidator()
         {
-            RuleFor(x => x.Title).NotEmpty();
-            RuleFor(x => x.Body).NotEmpty();
-            RuleFor(x => x.InitialPrice).NotEmpty();
+            RuleFor(x => x.Title)
+                .NotEmpty();
+            RuleFor(x => x.Body)
+                .NotEmpty();
+            
+
+            RuleFor(x => x.InitialPrice)
+                .NotEmpty()
+                .Custom((value, context) =>
+                {
+                    if (!Decimal.TryParse(value, out decimal price) || price < 0)
+                    {                     
+                        context.AddFailure($"must be greater than or equal to '0'");
+                    }                    
+                });            
         }
     }
 }

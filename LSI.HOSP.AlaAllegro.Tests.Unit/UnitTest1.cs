@@ -12,6 +12,7 @@ namespace LSI.HOSP.AlaAllegro.Tests.Unit
             //bugfix/GO-2
             //bugfix/GO-4
             //fetch2
+            //fetch1
             //bugfix/GO-3
         }
     }
